@@ -20,7 +20,7 @@ _HUNK_HEADER_LINE_NUMBERS_PREFIX = '@@ '
 
 
 class CommonClient(wjasvn.common_base.CommonBase):
-    def __init__(self, url_or_path, type_, username=None, password=None, basic_auth=None,
+    def __init__(self, url_or_path, type_, username=None, password=None, basic_auth=False,
                  svn_filepath='svn', trust_cert=None, env={}, *args, **kwargs):
         super(CommonClient, self).__init__(*args, **kwargs)
 
@@ -48,7 +48,7 @@ class CommonClient(wjasvn.common_base.CommonBase):
             cmd += ['--password', self.__password]
             cmd += ['--no-auth-cache']
 
-        if self.__basic_auth is not None:
+        if self.__basic_auth:
             cmd += ['--config-option', 'servers:global:http-auth-types=basic']
 
         cmd += [subcommand] + args
