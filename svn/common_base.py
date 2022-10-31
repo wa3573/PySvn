@@ -11,7 +11,7 @@ _LOGGER = logging.getLogger(__name__)
 class CommonBase(object):
     def external_command(
             self, cmd, success_code=0, do_combine=False, return_binary=False,
-            environment={}, wd=None, do_discard_stderr=True):
+            environment={}, wd=None, do_discard_stderr=True, ):
         _LOGGER.debug("RUN: %s" % (cmd,))
 
         env = os.environ.copy()

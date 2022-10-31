@@ -12,7 +12,7 @@ with open(os.path.join(_APP_PATH, 'resources', 'requirements.txt')) as f:
     install_requires = list(map(lambda s: s.strip(), f.readlines()))
 
 setuptools.setup(
-    name='svn',
+    name='wjasvn',
     version=svn.__version__,
     description="Intuitive Subversion wrapper.",
     long_description=long_description,
@@ -20,8 +20,8 @@ setuptools.setup(
     classifiers=[],
     keywords='svn subversion',
     author='Dustin Oprea',
-    author_email='myselfasunder@gmail.com',
-    url='https://github.com/dsoprea/PySvn',
+    author_email='wa3573@gmail.com',
+    url='https://github.com/wa3573/PySvn',
     license='GPL 2',
     packages=setuptools.find_packages(exclude=['tests']),
     include_package_data=True,

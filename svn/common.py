@@ -20,13 +20,14 @@ _HUNK_HEADER_LINE_NUMBERS_PREFIX = '@@ '
 
 
 class CommonClient(svn.common_base.CommonBase):
-    def __init__(self, url_or_path, type_, username=None, password=None,
+    def __init__(self, url_or_path, type_, username=None, password=None, basic_auth=None,
                  svn_filepath='svn', trust_cert=None, env={}, *args, **kwargs):
         super(CommonClient, self).__init__(*args, **kwargs)
 
         self.__url_or_path = url_or_path
         self.__username = username
         self.__password = password
+        self.__basic_auth = basic_auth
         self.__svn_filepath = svn_filepath
         self.__trust_cert = trust_cert
         self.__env = env
@@ -46,6 +47,9 @@ class CommonClient(svn.common_base.CommonBase):
             cmd += ['--username', self.__username]
             cmd += ['--password', self.__password]
             cmd += ['--no-auth-cache']
+
+        if self.__basic_auth is not None:
+            cmd += ['--config-option', 'servers:global:http-auth-types=basic']
 
         cmd += [subcommand] + args
         return self.external_command(cmd, environment=self.__env, **kwargs)
