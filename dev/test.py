@@ -21,9 +21,9 @@ print("Printing log.")
 
 import pprint
 
-import svn.local
+import wjasvn.local
 
-l = svn.local.LocalClient('/tmp/test_repo.co')
+l = wjasvn.local.LocalClient('/tmp/test_repo.co')
 
 for rel_path, e in l.list_recursive():
     print('')
@@ -36,17 +36,17 @@ for rel_path, e in l.list_recursive():
 
 sys.exit(0)
 
-import svn.local
-import svn.remote
+import wjasvn.local
+import wjasvn.remote
 import pprint
 
-#r = svn.remote.RemoteClient('https://xyz/svn/adam2/trunk')
-#r = svn.local.LocalClient('/Users/dustin/development/php/adam2')
+#r = wjasvn.remote.RemoteClient('https://xyz/svn/adam2/trunk')
+#r = wjasvn.local.LocalClient('/Users/dustin/development/php/adam2')
 
-import svn.local
+import wjasvn.local
 import pprint
 
-l = svn.local.LocalClient('/tmp/test_repo.co')
+l = wjasvn.local.LocalClient('/tmp/test_repo.co')
 info = l.info()
 pprint.pprint(info)
 properties = l.properties()
@@ -100,4 +100,4 @@ print(commit.find('date').text)
 # r.checkout('/tmp/checkout_2')
 # r.export('/tmp/export_1')
 
-#l = svn.local.LocalClient('/Users/dustin/development/php/adam2')
+#l = wjasvn.local.LocalClient('/Users/dustin/development/php/adam2')

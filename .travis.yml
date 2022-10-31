@@ -8,8 +8,8 @@ python:
   - "3.8"
 
 install:
-  - pip install -r svn/resources/requirements.txt
+  - pip install -r wjasvn/resources/requirements.txt
   - pip install coveralls
-script: nosetests -s -v --with-coverage --cover-package=svn
+script: nosetests -s -v --with-coverage --cover-package=wjasvn
 after_success:
   - coveralls

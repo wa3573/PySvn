@@ -3,10 +3,10 @@ import unittest
 import shutil
 import tempfile
 
-import svn.common
-import svn.local
-import svn.utility
-import svn.test_support
+import wjasvn.common
+import wjasvn.local
+import wjasvn.utility
+import wjasvn.test_support
 
 
 class TestCommonClient(unittest.TestCase):
@@ -15,9 +15,9 @@ class TestCommonClient(unittest.TestCase):
         super(TestCommonClient, self).__init__(*args, **kwargs)
 
     def test_update(self):
-        with svn.test_support.temp_repo():
-            with svn.test_support.temp_checkout() as (_, lc):
-                svn.test_support.populate_bigger_file_changes1()
+        with wjasvn.test_support.temp_repo():
+            with wjasvn.test_support.temp_checkout() as (_, lc):
+                wjasvn.test_support.populate_bigger_file_changes1()
 
                 lc.commit("Second commit.")
                 lc.update()
@@ -27,12 +27,12 @@ class TestCommonClient(unittest.TestCase):
                 self.assertEqual(1, lc.info()['commit_revision'])
 
     def test_diff_summary(self):
-        with svn.test_support.temp_repo() as (repo_path, _):
-            with svn.test_support.temp_checkout() as (_, lc):
-                svn.test_support.populate_bigger_file_changes1()
+        with wjasvn.test_support.temp_repo() as (repo_path, _):
+            with wjasvn.test_support.temp_checkout() as (_, lc):
+                wjasvn.test_support.populate_bigger_file_changes1()
                 lc.commit("Second revision.")
 
-            cc = svn.utility.get_common_for_cwd()
+            cc = wjasvn.utility.get_common_for_cwd()
 
             diff = cc.diff_summary(1, 2)
 
@@ -48,9 +48,9 @@ class TestCommonClient(unittest.TestCase):
             self.assertEquals(index[file_uri2]['item'], 'modified')
 
     def test_diff__with_diff(self):
-        with svn.test_support.temp_common() as (_, working_path, cc):
-            svn.test_support.populate_bigger_file_changes1()
-            svn.test_support.populate_bigger_file_change1()
+        with wjasvn.test_support.temp_common() as (_, working_path, cc):
+            wjasvn.test_support.populate_bigger_file_changes1()
+            wjasvn.test_support.populate_bigger_file_change1()
 
             actual = \
                 cc.diff(
@@ -84,9 +84,9 @@ class TestCommonClient(unittest.TestCase):
         # Make sure that we correctly handle an add, which represents in the
         # results with a `None` value.
 
-        with svn.test_support.temp_common() as (_, working_path, cc):
-            svn.test_support.populate_bigger_file_changes1()
-            rel_filepath2 = svn.test_support.populate_bigger_file_change1()
+        with wjasvn.test_support.temp_common() as (_, working_path, cc):
+            wjasvn.test_support.populate_bigger_file_changes1()
+            rel_filepath2 = wjasvn.test_support.populate_bigger_file_change1()
 
             actual = \
                 cc.diff(
@@ -111,8 +111,8 @@ class TestCommonClient(unittest.TestCase):
             self.assertEqual(actual, expected)
 
     def test_list(self):
-        with svn.test_support.temp_common() as (_, _, cc):
-            svn.test_support.populate_bigger_file_changes1()
+        with wjasvn.test_support.temp_common() as (_, _, cc):
+            wjasvn.test_support.populate_bigger_file_changes1()
 
             entries = cc.list()
             entries = sorted(entries)
@@ -127,8 +127,8 @@ class TestCommonClient(unittest.TestCase):
             self.assertEqual(entries, expected)
 
     def test_info(self):
-        with svn.test_support.temp_common() as (repo_path, _, cc):
-            svn.test_support.populate_bigger_file_changes1()
+        with wjasvn.test_support.temp_common() as (repo_path, _, cc):
+            wjasvn.test_support.populate_bigger_file_changes1()
 
             info = cc.info()
 
@@ -147,12 +147,12 @@ class TestCommonClient(unittest.TestCase):
                 'dir')
 
     def test_info_revision(self):
-        with svn.test_support.temp_common() as (_, working_path, cc):
-            svn.test_support.populate_bigger_file_changes1()
+        with wjasvn.test_support.temp_common() as (_, working_path, cc):
+            wjasvn.test_support.populate_bigger_file_changes1()
 
             # There's already an add staged.
 
-            lc = svn.local.LocalClient(working_path)
+            lc = wjasvn.local.LocalClient(working_path)
             lc.commit("Second changes.")
 
             # Get info for an older revision (to make sure the revision
@@ -165,8 +165,8 @@ class TestCommonClient(unittest.TestCase):
             self.assertEquals(info2['commit_revision'], 2)
 
     def test_log(self):
-        with svn.test_support.temp_common() as (_, _, cc):
-            svn.test_support.populate_bigger_file_changes1()
+        with wjasvn.test_support.temp_common() as (_, _, cc):
+            wjasvn.test_support.populate_bigger_file_changes1()
 
             history = cc.log_default()
             history = list(history)
@@ -179,8 +179,8 @@ class TestCommonClient(unittest.TestCase):
             self.assertEquals(l.msg, 'Initial commit.')
 
     def test_cat(self):
-        with svn.test_support.temp_common() as (_, _, cc):
-            svn.test_support.populate_bigger_file_changes1()
+        with wjasvn.test_support.temp_common() as (_, _, cc):
+            wjasvn.test_support.populate_bigger_file_changes1()
 
             content1 = cc.cat('committed_changed', revision=1)
             self.assertEqual(content1, b'')
@@ -189,8 +189,8 @@ class TestCommonClient(unittest.TestCase):
             self.assertEqual(content2, b'new data')
 
     def test_export(self):
-        with svn.test_support.temp_common() as (_, _, cc):
-            svn.test_support.populate_bigger_file_changes1()
+        with wjasvn.test_support.temp_common() as (_, _, cc):
+            wjasvn.test_support.populate_bigger_file_changes1()
 
             # Just a name. Will be created by the export.
             temp_path = tempfile.mktemp()
@@ -209,10 +209,10 @@ class TestCommonClient(unittest.TestCase):
                     pass
 
     def test_force__export(self):
-        with svn.test_support.temp_common() as (_, _, cc):
-            svn.test_support.populate_bigger_file_changes1()
+        with wjasvn.test_support.temp_common() as (_, _, cc):
+            wjasvn.test_support.populate_bigger_file_changes1()
 
-            with svn.test_support.temp_path() as temp_path:
+            with wjasvn.test_support.temp_path() as temp_path:
                 cc.export(to_path=temp_path, revision=2, force=True)
 
                 with open('committed_changed') as f:

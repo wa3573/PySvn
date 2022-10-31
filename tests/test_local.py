@@ -1,15 +1,15 @@
 import os
 import unittest
 
-import svn.constants
-import svn.test_support
+import wjasvn.constants
+import wjasvn.test_support
 
 
 class TestLocalClient(unittest.TestCase):
     def test_status(self):
-        with svn.test_support.temp_repo():
-            with svn.test_support.temp_checkout() as (_, lc):
-                svn.test_support.populate_bigger_file_changes1()
+        with wjasvn.test_support.temp_repo():
+            with wjasvn.test_support.temp_checkout() as (_, lc):
+                wjasvn.test_support.populate_bigger_file_changes1()
 
                 status = {}
                 for s in lc.status():
@@ -17,15 +17,15 @@ class TestLocalClient(unittest.TestCase):
                     status[filename] = s
 
                 added = status['added']
-                self.assertTrue(added is not None and added.type == svn.constants.ST_ADDED)
+                self.assertTrue(added is not None and added.type == wjasvn.constants.ST_ADDED)
 
                 committed_deleted = status['committed_deleted']
-                self.assertTrue(committed_deleted is not None and committed_deleted.type == svn.constants.ST_MISSING)
+                self.assertTrue(committed_deleted is not None and committed_deleted.type == wjasvn.constants.ST_MISSING)
 
     def test_remove(self):
-        with svn.test_support.temp_repo():
-            with svn.test_support.temp_checkout() as (wc_path, lc):
-                svn.test_support.populate_bigger_file_changes1()
+        with wjasvn.test_support.temp_repo():
+            with wjasvn.test_support.temp_checkout() as (wc_path, lc):
+                wjasvn.test_support.populate_bigger_file_changes1()
 
                 self.assertTrue(os.path.exists('new_file'))
 
@@ -60,7 +60,7 @@ class TestLocalClient(unittest.TestCase):
                 filepath = os.path.join(wc_path, 'new_file')
                 status = status_index[filepath]
 
-                self.assertEquals(status.type, svn.constants.ST_DELETED)
+                self.assertEquals(status.type, wjasvn.constants.ST_DELETED)
 
                 # Commit the change.
 
@@ -84,6 +84,6 @@ class TestLocalClient(unittest.TestCase):
                 self.assertNotIn('new_file', current_entries)
 
     def test_cleanup(self):
-        with svn.test_support.temp_repo():
-            with svn.test_support.temp_checkout() as (_, lc):
+        with wjasvn.test_support.temp_repo():
+            with wjasvn.test_support.temp_checkout() as (_, lc):
                 lc.cleanup()

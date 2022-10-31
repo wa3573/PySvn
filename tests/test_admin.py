@@ -5,15 +5,15 @@ import tempfile
 import shutil
 import logging
 
-import svn.admin
-import svn.remote
+import wjasvn.admin
+import wjasvn.remote
 
 _LOGGER = logging.getLogger(__name__)
 
 
 class TestAdmin(unittest.TestCase):
     """
-    For testing svn/admin.py
+    For testing wjasvn/admin.py
     """
 
     def shortDescription(self):
@@ -28,14 +28,14 @@ class TestAdmin(unittest.TestCase):
         temp_path = tempfile.mkdtemp()
         shutil.rmtree(temp_path)
 
-        a = svn.admin.Admin()
+        a = wjasvn.admin.Admin()
 
         try:
             # Create.
             a.create(temp_path)
 
             # Do a read.
-            rc = svn.remote.RemoteClient('file://' + temp_path)
+            rc = wjasvn.remote.RemoteClient('file://' + temp_path)
             info = rc.info()
             _LOGGER.debug("Info from new repository: [%s]", str(info))
         finally:

@@ -1,9 +1,9 @@
 import os.path
 import setuptools
 
-import svn
+import wjasvn
 
-_APP_PATH = os.path.dirname(svn.__file__)
+_APP_PATH = os.path.dirname(wjasvn.__file__)
 
 with open(os.path.join(_APP_PATH, 'resources', 'README.md')) as f:
     long_description = f.read()
@@ -13,12 +13,12 @@ with open(os.path.join(_APP_PATH, 'resources', 'requirements.txt')) as f:
 
 setuptools.setup(
     name='wjasvn',
-    version=svn.__version__,
+    version=wjasvn.__version__,
     description="Intuitive Subversion wrapper.",
     long_description=long_description,
     long_description_content_type='text/markdown',
     classifiers=[],
-    keywords='svn subversion',
+    keywords='wjasvn subversion',
     author='Dustin Oprea',
     author_email='wa3573@gmail.com',
     url='https://github.com/wa3573/PySvn',
@@ -27,7 +27,7 @@ setuptools.setup(
     include_package_data=True,
     zip_safe=False,
     package_data={
-        'svn': [
+        'wjasvn': [
             'resources/README.md',
             'resources/requirements.txt',
             'resources/requirements-testing.txt',

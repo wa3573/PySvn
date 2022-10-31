@@ -4,11 +4,11 @@ import tempfile
 import shutil
 import uuid
 
-import svn.constants
-import svn.common
-import svn.remote
-import svn.local
-import svn.admin
+import wjasvn.constants
+import wjasvn.common
+import wjasvn.remote
+import wjasvn.local
+import wjasvn.admin
 
 @contextlib.contextmanager
 def temp_path():
@@ -34,10 +34,10 @@ def temp_repo():
     """Initialize a repository in the current path."""
 
     with temp_path() as repo_path:
-        a = svn.admin.Admin()
+        a = wjasvn.admin.Admin()
         a.create('.')
 
-        rc = svn.remote.RemoteClient('file://{}'.format(repo_path))
+        rc = wjasvn.remote.RemoteClient('file://{}'.format(repo_path))
 
         yield repo_path, rc
 
@@ -50,10 +50,10 @@ def temp_checkout():
     repo_path = os.getcwd()
 
     with temp_path() as working_path:
-        rc = svn.remote.RemoteClient('file://{}'.format(repo_path))
+        rc = wjasvn.remote.RemoteClient('file://{}'.format(repo_path))
         rc.checkout('.')
 
-        lc = svn.local.LocalClient(working_path)
+        lc = wjasvn.local.LocalClient(working_path)
 
         yield working_path, lc
 
@@ -66,9 +66,9 @@ def temp_common():
 
     with temp_repo() as (repo_path, _):
         with temp_checkout() as (working_path, _):
-            cc = svn.common.CommonClient(
+            cc = wjasvn.common.CommonClient(
                     working_path,
-                    svn.constants.LT_PATH)
+                    wjasvn.constants.LT_PATH)
 
             yield repo_path, working_path, cc
 
@@ -76,12 +76,12 @@ def populate_bigger_file_changes1():
     """Establish a deterministic history of changes."""
 
     assert \
-        os.path.exists('.svn') is True, \
+        os.path.exists('.wjasvn') is True, \
         "test_local_populate1() must be called with the working-directory " \
         "as the CWD."
 
     working_path = os.getcwd()
-    lc = svn.local.LocalClient(working_path)
+    lc = wjasvn.local.LocalClient(working_path)
 
     # Create a file that will not be committed.
 
@@ -146,12 +146,12 @@ def populate_bigger_file_change1():
     """
 
     assert \
-        os.path.exists('.svn') is True, \
+        os.path.exists('.wjasvn') is True, \
         "test_local_populate1() must be called with the working-directory " \
         "as the CWD."
 
     working_path = os.getcwd()
-    lc = svn.local.LocalClient(working_path)
+    lc = wjasvn.local.LocalClient(working_path)
 
     # Create a file that will be committed and then changed a lot.
 

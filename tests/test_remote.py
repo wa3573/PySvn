@@ -2,15 +2,15 @@ import os
 import shutil
 import unittest
 
-import svn.constants
-import svn.exception
-import svn.remote
-import svn.test_support
+import wjasvn.constants
+import wjasvn.exception
+import wjasvn.remote
+import wjasvn.test_support
 
 
 class TestRemoteClient(unittest.TestCase):
     """
-    For testing svn/remote.py
+    For testing wjasvn/remote.py
     """
 
     def shortDescription(self):
@@ -28,8 +28,8 @@ class TestRemoteClient(unittest.TestCase):
 
     def test_error_client_formation(self):
         try:
-            svn.remote.RemoteClient(self.test_fake_url).checkout('.')
-        except svn.exception.SvnException:
+            wjasvn.remote.RemoteClient(self.test_fake_url).checkout('.')
+        except wjasvn.exception.SvnException:
             pass
         else:
             raise Exception("Expected exception for bad URL.")
@@ -39,13 +39,13 @@ class TestRemoteClient(unittest.TestCase):
         Testing checkout
         :return:
         """
-        svn.remote.RemoteClient(self.test_svn_url).checkout('trial')
+        wjasvn.remote.RemoteClient(self.test_svn_url).checkout('trial')
         self.assertTrue(os.path.exists('trial'))
 
     def test_remove(self):
-        with svn.test_support.temp_repo() as (_, rc):
-            with svn.test_support.temp_checkout():
-                svn.test_support.populate_bigger_file_changes1()
+        with wjasvn.test_support.temp_repo() as (_, rc):
+            with wjasvn.test_support.temp_checkout():
+                wjasvn.test_support.populate_bigger_file_changes1()
 
             current_entries = rc.list()
             current_entries = list(current_entries)

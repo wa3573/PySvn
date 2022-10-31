@@ -1,13 +1,13 @@
-import svn.constants
-import svn.common
+import wjasvn.constants
+import wjasvn.common
 
 
-class RemoteClient(svn.common.CommonClient):
+class RemoteClient(wjasvn.common.CommonClient):
 
     def __init__(self, url, *args, **kwargs):
         super(RemoteClient, self).__init__(
             url,
-            svn.constants.LT_URL,
+            wjasvn.constants.LT_URL,
             *args, **kwargs)
 
     def checkout(self, path, revision=None):
